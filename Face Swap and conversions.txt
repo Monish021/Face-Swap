@@ -1,0 +1,75 @@
+1. Face Swap
+Libraries: face_recognition, dlib, OpenCV, or use InsightFace for more robust results.
+
+Approach:
+
+Detect landmarks on both faces.
+
+Align, warp, and blend source face onto the destination image.
+
+Use seamless cloning (cv2.seamlessClone) for better blending.
+
+2. Capture Image Only If Face Detected
+Library: cv2.CascadeClassifier or face_recognition
+
+Logic: if face_detected(frame):
+    	     cv2.imwrite("face_captured.jpg", frame)
+
+3. Capture Image Only If Hand Sign Detected
+Library: MediaPipe Hands
+
+Logic:  if hand_sign_detected(frame):  # You can train a classifier to detect specific signs
+    		cv2.imwrite("hand_sign.jpg", frame)
+
+4. Background Removal
+Libraries: MediaPipe Selfie Segmentation, rembg, segment-anything
+
+Logic:  # Using rembg
+	from rembg import remove
+	output = remove(input_image)
+
+
+ 5. Image Conversion (Sketch or Inpainting)
+Sketch:
+	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+	inverted = 255 - gray
+	blurred = cv2.GaussianBlur(inverted, (21, 21), 0)
+	sketch = cv2.divide(gray, 255 - blurred, scale=256.0)
+
+Inpainting:
+Use OpenCV’s inpaint method for removing regions:
+	result = cv2.inpaint(image, mask, 3, cv2.INPAINT_TELEA)
+
+
+ 6. Caricature (Carry Catcher)
+Approach:
+
+Use face landmarks.
+
+Exaggerate distances between features.
+
+Apply warping to amplify features.
+
+Libraries like dlib, or use pretrained caricature GAN models.
+
+
+ 7. Image Conversion (Black & White)
+Simple:
+	bw = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+
+
+ 8. Cartoon Image Conversion
+Approach:
+
+Bilateral filter to smooth.
+
+Edge detection and overlay.
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+edges = cv2.adaptiveThreshold(gray, 255,
+                              cv2.ADAPTIVE_THRESH_MEAN_C,
+                              cv2.THRESH_BINARY, 9, 9)
+color = cv2.bilateralFilter(img, 9, 300, 300)
+cartoon = cv2.bitwise_and(color, color, mask=edges)
+
